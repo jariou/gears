@@ -1,9 +1,26 @@
-bestGearRatio<-function (m, maxDepth, maxGear) 
+bestGearRatio <- function (m, maxDepth=10, maxGear=127, maxError=.1) 
 {
-    cat("\nNeed to implement to obtain the best ratio approximation with certain constraints\n")
+    best      = list()
+    bestCount = 0
+    
+    for( i in 1:maxDepth)
+    {
+        tmp = gearRatio(m,1,i)       
+        
+        if(max(tmp$gears) <= 127)
+            if(abs(tmp$percentError) <= maxError)
+            {
+                bestCount = bestCount + 1
+                best[[bestCount]]= append(tmp,list(depth = i))         
+            }
+        
+    }
+    
+    class(best) = "gearRatioList"
+    best
 }
 
-gearRatio<-function (m, n = 1, depth = 20) 
+gearRatio <- function (m, n = 1, depth = 20) 
 {
     if(m>n)
     {
@@ -48,10 +65,17 @@ gearRatio<-function (m, n = 1, depth = 20)
     tmp
 }
 
-print.gearRatio<-function (x, ...) 
+print.gearRatio <- function (x, ...) 
 {
     cat("\nGears  :  ", x$gears[1], ":", x$gears[2], "\n")
     cat("Ratio  :  ", format(x$ratio, digits=4), "\n")
     cat("Error  :  ",  format(x$goal, digits=4), " [", paste(format(x$percentError,digits=3), "%",sep=""),"]\n\n")
+    invisible(x)
+}
+
+print.gearRatioList <- function (x, ...) 
+{
+    for(i in 1:length(x))
+        print.gearRatio(x[[i]])
     invisible(x)
 }
