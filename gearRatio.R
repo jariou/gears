@@ -81,3 +81,17 @@ print.gearRatioList <- function (x, ...)
         print.gearRatio(x[[i]])
     invisible(x)
 }
+
+bore3P<-function(d1,d2,d3)
+{
+    r1 = d1/2
+    r2 = d2/2
+    r3 = d3/2
+    
+    rProd       = r1 * r2 * r3
+    rSum        = r1 + r2 + r3
+    sumOf2Prods = r1*r2 + r1*r3 + r3*r2
+    
+    2 * (rProd / (2 * sqrt(rProd * rSum)- sumOf2Prods ))   
+}
+
